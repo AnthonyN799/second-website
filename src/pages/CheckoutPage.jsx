@@ -87,7 +87,6 @@ export default function CheckoutPage() {
         </div>
         <div className="grid lg:grid-cols-5 gap-8">
           <div className="lg:col-span-3 space-y-8">
-            {/* Delivery Info */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
               <h2 className="font-bold text-lg mb-6 flex items-center"><Truck className="w-5 h-5 mr-2 text-slate-400" /> Delivery Information</h2>
               <div className="space-y-4">
@@ -112,7 +111,6 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
-            {/* Payment */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
               <h2 className="font-bold text-lg mb-6 flex items-center"><Banknote className="w-5 h-5 mr-2 text-slate-400" /> Payment Method</h2>
               <div className="p-4 rounded-xl border-2 border-slate-900 bg-slate-50 flex items-center gap-4">
@@ -126,7 +124,6 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-          {/* Order Summary */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sticky top-28">
               <h3 className="font-bold text-lg mb-4">Order Summary</h3>
