@@ -76,17 +76,7 @@ export default function CheckoutPage() {
     finally { setSubmitting(false); }
   };
 
-  const InputField = ({ label, field, type = 'text', placeholder, rows }) => (
-    <div>
-      <label className="text-xs font-bold uppercase text-slate-500 ml-1 block mb-1">{label} *</label>
-      {rows ? (
-        <textarea rows={rows} className={`w-full p-3 bg-slate-50 border rounded-xl outline-none focus:ring-2 ring-slate-900/10 resize-none ${errors[field] ? 'border-red-300' : 'border-slate-200'}`} placeholder={placeholder} value={form[field]} onChange={e => handleChange(field, e.target.value)} />
-      ) : (
-        <input type={type} className={`w-full p-3 bg-slate-50 border rounded-xl outline-none focus:ring-2 ring-slate-900/10 ${errors[field] ? 'border-red-300' : 'border-slate-200'}`} placeholder={placeholder} value={form[field]} onChange={e => handleChange(field, e.target.value)} />
-      )}
-      {errors[field] && <p className="text-red-500 text-xs mt-1 ml-1">{errors[field]}</p>}
-    </div>
-  );
+  const inputClass = (field) => `w-full p-3 bg-slate-50 border rounded-xl outline-none focus:ring-2 ring-slate-900/10 ${errors[field] ? 'border-red-300' : 'border-slate-200'}`;
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-20 font-sans text-slate-900">
@@ -101,9 +91,21 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
               <h2 className="font-bold text-lg mb-6 flex items-center"><Truck className="w-5 h-5 mr-2 text-slate-400" /> Delivery Information</h2>
               <div className="space-y-4">
-                <InputField label="Full Name" field="name" placeholder="John Doe" />
-                <InputField label="Phone Number" field="phone" type="tel" placeholder="03 123 456" />
-                <InputField label="Delivery Address" field="address" placeholder="City, Street, Building, Floor" rows={2} />
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-500 ml-1 block mb-1">Full Name *</label>
+                  <input type="text" className={inputClass('name')} placeholder="John Doe" value={form.name} onChange={e => handleChange('name', e.target.value)} />
+                  {errors.name && <p className="text-red-500 text-xs mt-1 ml-1">{errors.name}</p>}
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-500 ml-1 block mb-1">Phone Number *</label>
+                  <input type="tel" className={inputClass('phone')} placeholder="03 123 456" value={form.phone} onChange={e => handleChange('phone', e.target.value)} />
+                  {errors.phone && <p className="text-red-500 text-xs mt-1 ml-1">{errors.phone}</p>}
+                </div>
+                <div>
+                  <label className="text-xs font-bold uppercase text-slate-500 ml-1 block mb-1">Delivery Address *</label>
+                  <textarea rows={2} className={`${inputClass('address')} resize-none`} placeholder="City, Street, Building, Floor" value={form.address} onChange={e => handleChange('address', e.target.value)} />
+                  {errors.address && <p className="text-red-500 text-xs mt-1 ml-1">{errors.address}</p>}
+                </div>
                 <div>
                   <label className="text-xs font-bold uppercase text-slate-500 ml-1 block mb-1">Order Notes (optional)</label>
                   <textarea rows={2} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 ring-slate-900/10 resize-none" placeholder="Special instructions..." value={form.notes} onChange={e => handleChange('notes', e.target.value)} />
