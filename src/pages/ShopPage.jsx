@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Info, Maximize2, X, ChevronDown, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Info, Maximize2, X, ChevronDown, Plus, Minus, ShoppingBag, ArrowLeft, Search } from 'lucide-react';
 import { shopItems, SHOP_CATEGORIES, getItemPrice } from '../data/products';
 import { useCart } from '../context/CartContext';
 import ProductIcon from '../components/ProductIcon';
@@ -9,6 +9,7 @@ import Toast from '../components/Toast';
 export default function ShopPage() {
   const { addItem } = useCart();
   const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
   const [selections, setSelections] = useState({});
   const [quantities, setQuantities] = useState({});
   const [viewProduct, setViewProduct] = useState(null);
@@ -34,12 +35,42 @@ export default function ShopPage() {
     setViewProduct(null);
   };
 
-  const filtered = activeCategory === 'All' ? shopItems : shopItems.filter(i => i.categories.includes(activeCategory));
+  const filtered = shopItems.filter(item => {
+    const matchesCategory = activeCategory === 'All' || item.categories.includes(activeCategory);
+    const matchesSearch = searchQuery.trim() === '' || 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (item.details?.ingredients || []).some(ing => ing.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pt-24 pb-20">
       <div className="max-w-3xl mx-auto px-6">
-        <div className="mb-8"><h1 className="text-3xl font-black tracking-tight mb-2">Shop Online</h1><p className="text-slate-500 text-sm">Cash on delivery available nationwide.</p></div>
+        <div className="mb-8">
+          <Link to="/" className="inline-flex items-center text-slate-500 hover:text-slate-900 font-bold text-sm mb-4">
+            <ArrowLeft className="w-4 h-4 mr-1" /> Back to Home
+          </Link>
+          <h1 className="text-3xl font-black tracking-tight mb-2">Shop Online</h1>
+          <p className="text-slate-500 text-sm">Cash on delivery available nationwide.</p>
+        </div>
+
+        {/* Search Bar */}
+        <div className="relative mb-6">
+          <Search className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search products, ingredients..."
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+            className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl outline-none focus:ring-2 ring-slate-900/10 text-sm"
+          />
+          {searchQuery && (
+            <button onClick={() => setSearchQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-900">
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
 
         <div className="flex overflow-x-auto pb-4 mb-6 gap-2 no-scrollbar">
           {SHOP_CATEGORIES.map(cat => (
@@ -48,7 +79,12 @@ export default function ShopPage() {
         </div>
 
         <div className="space-y-6 mb-12">
-          {filtered.map(item => (
+          {filtered.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-slate-400 text-lg mb-2">No products found</p>
+              <p className="text-slate-400 text-sm">Try a different search term or category.</p>
+            </div>
+          ) : filtered.map(item => (
             <div key={item.id} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all">
               <div className="flex justify-between items-start mb-4 cursor-pointer" onClick={() => setViewProduct(item)}>
                 <div className="flex items-center space-x-4">
