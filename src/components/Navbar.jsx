@@ -9,6 +9,7 @@ export default function Navbar() {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isB2B = location.pathname === '/b2b';
+  const isShop = location.pathname === '/shop' || location.pathname.startsWith('/product/');
   const hasHero = isHome || isB2B; // transparent header on hero pages
 
   useEffect(() => {
@@ -38,11 +39,11 @@ export default function Navbar() {
           )}
 
           {/* Always-visible links */}
-          <Link to="/shop" className="text-slate-900 hover:text-emerald-600 transition-colors font-black flex items-center">
+          <Link to="/shop" className={`transition-colors flex items-center ${isShop ? 'text-slate-900 font-black' : 'text-slate-300 hover:text-slate-900 font-bold'}`}>
             <ShoppingBag className="w-4 h-4 mr-1" /> SHOP
           </Link>
 
-          <Link to="/b2b" className="hover:text-slate-900 transition-colors flex items-center">
+          <Link to="/b2b" className={`transition-colors flex items-center ${isB2B ? 'text-slate-900 font-black' : 'text-slate-300 hover:text-slate-900 font-bold'}`}>
             <Building2 className="w-4 h-4 mr-1" /> B2B PORTAL
           </Link>
 
@@ -60,8 +61,8 @@ export default function Navbar() {
 
         {/* Mobile nav */}
         <div className="flex md:hidden items-center space-x-3">
-          <Link to="/shop" className="text-slate-900 font-bold text-xs uppercase tracking-wider">Shop</Link>
-          <Link to="/b2b" className="text-slate-500 font-bold text-xs uppercase tracking-wider">B2B</Link>
+          <Link to="/shop" className={`font-bold text-xs uppercase tracking-wider ${isShop ? 'text-slate-900' : 'text-slate-300'}`}>Shop</Link>
+          <Link to="/b2b" className={`font-bold text-xs uppercase tracking-wider ${isB2B ? 'text-slate-900' : 'text-slate-300'}`}>B2B</Link>
           <Link to="/cart" className="relative p-2">
             <ShoppingBag className="w-5 h-5" />
             {totalItems > 0 && (
