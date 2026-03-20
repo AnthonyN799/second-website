@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShoppingBag, Building2, ArrowRight, Leaf, ShieldCheck,
-  Wind, Heart, Users, ChevronRight, Zap, Star, ArrowDown,
-  Sparkles, Droplets, Flame
+  Wind, Heart, Users, Zap, Star
 } from 'lucide-react';
 import { shopItems, heroSlides } from '../data/products';
 import ProductIcon from '../components/ProductIcon';
 
 /* ═══════════════════════════════════════════════
-   SCROLL REVEAL HOOK
+   SCROLL REVEAL
    ═══════════════════════════════════════════════ */
 function useReveal(threshold = 0.15) {
   const ref = useRef(null);
@@ -45,7 +44,7 @@ function Reveal({ children, delay = 0, className = '' }) {
 }
 
 /* ═══════════════════════════════════════════════
-   PARALLAX FLOATING ORB
+   FLOATING ORB
    ═══════════════════════════════════════════════ */
 function FloatingOrb({ className, speed = 0.02 }) {
   const ref = useRef(null);
@@ -66,9 +65,11 @@ function FloatingOrb({ className, speed = 0.02 }) {
 }
 
 /* ═══════════════════════════════════════════════
-   DATA
+   DATA — lead with products that have real photos
    ═══════════════════════════════════════════════ */
-const featured = shopItems.slice(0, 6);
+const withImages = shopItems.filter(i => i.image);
+const withoutImages = shopItems.filter(i => !i.image);
+const featured = [...withImages, ...withoutImages].slice(0, 6);
 
 export default function HomePage() {
   const carouselRef = useRef(null);
@@ -85,72 +86,96 @@ export default function HomePage() {
     <div className="min-h-screen bg-white font-sans text-slate-900 overflow-x-hidden">
 
       {/* ═══════════════════════════════════════
-          HERO — FULL VIEWPORT CINEMATIC
+          HERO — PRODUCT-LED, SPLIT LAYOUT
           ═══════════════════════════════════════ */}
-      <header className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated gradient orbs */}
-        <FloatingOrb speed={0.015} className="absolute top-[10%] left-[5%] w-[500px] h-[500px] bg-emerald-100 rounded-full blur-[150px] opacity-60 pointer-events-none" />
-        <FloatingOrb speed={0.02} className="absolute bottom-[5%] right-[10%] w-[600px] h-[600px] bg-blue-100 rounded-full blur-[160px] opacity-50 pointer-events-none" />
-        <FloatingOrb speed={0.012} className="absolute top-[50%] left-[40%] w-[300px] h-[300px] bg-amber-50 rounded-full blur-[120px] opacity-40 pointer-events-none" />
+      <header className="relative min-h-screen flex items-center overflow-hidden">
+        <FloatingOrb speed={0.015} className="absolute top-[10%] left-[5%] w-[500px] h-[500px] bg-emerald-100 rounded-full blur-[150px] opacity-50 pointer-events-none" />
+        <FloatingOrb speed={0.02} className="absolute bottom-[5%] right-[10%] w-[600px] h-[600px] bg-blue-50 rounded-full blur-[160px] opacity-40 pointer-events-none" />
 
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-          <Reveal>
-            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-900/5 backdrop-blur-sm rounded-full text-slate-500 text-[11px] font-bold uppercase tracking-[0.2em] mb-10">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              <span>Professional Physiotherapy Solutions</span>
-            </div>
-          </Reveal>
+        <div className="max-w-7xl mx-auto px-6 relative z-10 pt-32 pb-20 w-full grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          {/* Left — Copy */}
+          <div>
+            <Reveal>
+              <div className="inline-flex items-center space-x-2 px-4 py-2 bg-slate-900/5 backdrop-blur-sm rounded-full text-slate-500 text-[11px] font-bold uppercase tracking-[0.2em] mb-8">
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                <span>Botanical Performance Care</span>
+              </div>
+            </Reveal>
 
-          <Reveal delay={0.1}>
-            <h1 className="text-[clamp(3rem,8vw,7.5rem)] font-black leading-[0.88] tracking-[-0.04em] mb-8">
-              Feel the
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500">
-                difference.
-              </span>
-            </h1>
-          </Reveal>
+            <Reveal delay={0.1}>
+              <h1 className="text-[clamp(3rem,7vw,6rem)] font-black leading-[0.88] tracking-[-0.04em] mb-6">
+                Feel the
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-500 to-cyan-500">
+                  difference.
+                </span>
+              </h1>
+            </Reveal>
 
-          <Reveal delay={0.2}>
-            <p className="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed font-light">
-              Botanical formulations engineered for professionals.
-              <br className="hidden md:block" />
-              Now available for everyone.
-            </p>
-          </Reveal>
+            <Reveal delay={0.18}>
+              <p className="text-lg md:text-xl text-slate-400 max-w-lg mb-10 leading-relaxed">
+                The gels, oils, and creams that physiotherapists rely on daily — 
+                engineered for the clinic, now in your hands.
+              </p>
+            </Reveal>
 
-          <Reveal delay={0.3}>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/shop"
-                className="group px-10 py-5 bg-slate-900 text-white rounded-full font-bold text-lg flex items-center hover:bg-slate-800 hover:shadow-2xl hover:shadow-slate-900/25 transition-all duration-300"
-              >
-                Shop Now
-                <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                to="/b2b"
-                className="group px-10 py-5 bg-white/80 backdrop-blur-sm border-2 border-slate-200 rounded-full font-bold text-lg text-slate-700 hover:border-slate-400 transition-all duration-300 flex items-center"
-              >
-                Wholesale
-                <Building2 className="ml-3 w-5 h-5 text-slate-400" />
-              </Link>
-            </div>
-          </Reveal>
+            <Reveal delay={0.26}>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  to="/shop"
+                  className="group px-9 py-4 bg-slate-900 text-white rounded-full font-bold text-base flex items-center hover:bg-slate-800 hover:shadow-2xl hover:shadow-slate-900/25 transition-all duration-300"
+                >
+                  Shop Now
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link
+                  to="/b2b"
+                  className="group px-9 py-4 bg-white/80 backdrop-blur-sm border-2 border-slate-200 rounded-full font-bold text-base text-slate-600 hover:border-slate-400 transition-all duration-300 flex items-center"
+                >
+                  Wholesale
+                  <Building2 className="ml-2 w-4 h-4 text-slate-400" />
+                </Link>
+              </div>
+            </Reveal>
 
-          {/* Scroll indicator */}
-          <Reveal delay={0.5}>
-            <div className="mt-20 flex flex-col items-center text-slate-300 animate-bounce">
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold mb-2">Scroll</span>
-              <ArrowDown className="w-4 h-4" />
-            </div>
+            {/* Trust strip */}
+            <Reveal delay={0.35}>
+              <div className="mt-12 flex flex-wrap items-center gap-6 text-[13px] text-slate-300 font-medium">
+                {[
+                  { icon: <Heart className="w-3.5 h-3.5" />, t: 'Cruelty Free' },
+                  { icon: <ShieldCheck className="w-3.5 h-3.5" />, t: 'Paraben Free' },
+                  { icon: <Leaf className="w-3.5 h-3.5" />, t: 'Botanical' },
+                ].map((b, i) => (
+                  <span key={i} className="flex items-center gap-1.5">
+                    {b.icon} {b.t}
+                  </span>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right — Hero Product */}
+          <Reveal delay={0.15} className="flex justify-center lg:justify-end">
+            <Link to="/product/pure-ice-gel" className="group relative">
+              {/* Glow behind product */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-200/40 to-emerald-200/30 rounded-full blur-[80px] scale-75 group-hover:scale-90 transition-transform duration-700 pointer-events-none" />
+              <img
+                src="https://i.imgur.com/sLLnGFB.png"
+                alt="Pure Ice Gel"
+                className="relative w-[320px] md:w-[420px] lg:w-[460px] drop-shadow-2xl group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              {/* Floating label */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md rounded-full px-5 py-2 shadow-lg border border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Pure Ice Gel — $12</span>
+              </div>
+            </Link>
           </Reveal>
         </div>
       </header>
 
 
       {/* ═══════════════════════════════════════
-          PRODUCT CAROUSEL — NIKE STYLE
+          PRODUCT CAROUSEL
           ═══════════════════════════════════════ */}
       <section className="py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6 mb-10">
@@ -158,7 +183,7 @@ export default function HomePage() {
             <div className="flex items-end justify-between">
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 block mb-3">The Collection</span>
-                <h2 className="text-4xl md:text-6xl font-black tracking-tight">Our products.</h2>
+                <h2 className="text-4xl md:text-6xl font-black tracking-tight">Made to perform.</h2>
               </div>
               <Link to="/shop" className="hidden md:flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-900 transition-colors pb-2">
                 View all <ArrowRight className="w-4 h-4" />
@@ -167,17 +192,17 @@ export default function HomePage() {
           </Reveal>
         </div>
 
-        {/* Horizontal scroll */}
+        {/* Horizontal scroll — images-first order */}
         <div
           ref={carouselRef}
           onScroll={handleCarouselScroll}
           className="flex gap-5 overflow-x-auto snap-x snap-mandatory px-6 md:px-[calc((100vw-1280px)/2+24px)] pb-6 no-scrollbar cursor-grab active:cursor-grabbing"
         >
-          {featured.map((item, i) => (
+          {featured.map((item) => (
             <Link
               key={item.id}
               to={`/product/${item.slug}`}
-              className="group flex-none w-[300px] md:w-[340px] snap-start"
+              className="group flex-none w-[280px] md:w-[320px] snap-start"
             >
               <div className="relative bg-slate-50 rounded-[2rem] overflow-hidden aspect-[3/4] mb-5 border border-slate-100 hover:border-slate-200 transition-all duration-500 hover:shadow-xl">
                 <div className="absolute inset-0 flex items-center justify-center p-10">
@@ -193,11 +218,10 @@ export default function HomePage() {
                     </div>
                   )}
                 </div>
-                {/* Hover gradient */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <div className="px-2">
-                <h3 className="font-bold text-lg mb-1">{item.name}</h3>
+              <div className="px-1">
+                <h3 className="font-bold text-base mb-1">{item.name}</h3>
                 <p className="text-slate-400 text-sm mb-2">{item.description}</p>
                 <span className="text-lg font-black">
                   {item.price ? `$${item.price}` : `From $${item.sizes?.[0]?.price}`}
@@ -207,7 +231,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Progress bar */}
+        {/* Progress bar (mobile) */}
         <div className="max-w-7xl mx-auto px-6 mt-6">
           <div className="h-[2px] bg-slate-100 rounded-full overflow-hidden md:hidden">
             <div
@@ -223,24 +247,23 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════
-          STATEMENT — APPLE STYLE DARK PANEL
+          STATEMENT — LIGHT PANEL (fixes dark fatigue)
           ═══════════════════════════════════════ */}
-      <section className="bg-slate-950 text-white py-32 md:py-44 relative overflow-hidden">
-        <FloatingOrb speed={0.01} className="absolute top-[20%] right-[10%] w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <FloatingOrb speed={0.018} className="absolute bottom-[10%] left-[5%] w-[350px] h-[350px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <section className="py-28 md:py-36 border-y border-slate-100 bg-slate-50 relative overflow-hidden">
+        <FloatingOrb speed={0.01} className="absolute top-[20%] right-[10%] w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
           <Reveal>
-            <h2 className="text-[clamp(2.5rem,6vw,5.5rem)] font-black leading-[0.9] tracking-tight mb-8">
+            <h2 className="text-[clamp(2.2rem,5.5vw,5rem)] font-black leading-[0.92] tracking-tight mb-8">
               Clinical precision.
               <br />
-              <span className="text-slate-500">Botanical purity.</span>
+              <span className="text-slate-300">Botanical purity.</span>
             </h2>
           </Reveal>
-          <Reveal delay={0.15}>
+          <Reveal delay={0.12}>
             <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
               Every formula balances glide, absorption, and sensation —
-              developed in the lab, perfected in the clinic.
+              developed in the lab, perfected in the clinic, loved at home.
             </p>
           </Reveal>
         </div>
@@ -248,7 +271,7 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════
-          VALUE GRID — GENEROUS SPACING
+          VALUE PROPS
           ═══════════════════════════════════════ */}
       <section className="py-28 md:py-36 max-w-7xl mx-auto px-6">
         <Reveal>
@@ -263,7 +286,7 @@ export default function HomePage() {
               icon: <Zap className="w-8 h-8" />,
               bg: 'bg-amber-50 text-amber-600',
               t: 'Performance Tested',
-              d: 'Calibrated viscosity for deep tissue work. No early drying. No excess residue. Just the right glide, every session.',
+              d: 'Calibrated viscosity for deep tissue work. No early drying, no excess residue — just the right glide, every session.',
             },
             {
               icon: <Leaf className="w-8 h-8" />,
@@ -309,7 +332,7 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════
-          TESTIMONIAL — FULL-WIDTH QUOTE
+          TESTIMONIAL — B2C FRIENDLY
           ═══════════════════════════════════════ */}
       <section className="bg-slate-50 border-y border-slate-100 py-24 md:py-32">
         <div className="max-w-4xl mx-auto px-6 text-center">
@@ -322,7 +345,8 @@ export default function HomePage() {
           </Reveal>
           <Reveal delay={0.1}>
             <blockquote className="text-2xl md:text-4xl font-bold leading-snug tracking-tight mb-8 text-slate-900">
-              "{heroSlides[0].quote}"
+              "Most of my patients ask to take tubes home after their sessions.
+              <span className="text-slate-300"> That says everything.</span>"
             </blockquote>
           </Reveal>
           <Reveal delay={0.2}>
@@ -331,8 +355,8 @@ export default function HomePage() {
                 <Users className="w-6 h-6 text-slate-400" />
               </div>
               <div className="text-left">
-                <p className="font-bold text-sm">{heroSlides[0].author}</p>
-                <p className="text-slate-400 text-sm">{heroSlides[0].role}</p>
+                <p className="font-bold text-sm">{heroSlides[1].author}</p>
+                <p className="text-slate-400 text-sm">{heroSlides[1].role}</p>
               </div>
             </div>
           </Reveal>
@@ -341,7 +365,7 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════
-          TWO WORLDS — B2C / B2B SPLIT
+          TWO WORLDS — B2C / B2B
           ═══════════════════════════════════════ */}
       <section className="py-28 md:py-36 max-w-7xl mx-auto px-6">
         <Reveal>
@@ -393,7 +417,7 @@ export default function HomePage() {
 
 
       {/* ═══════════════════════════════════════
-          CLOSING CTA — CINEMATIC
+          CLOSING CTA
           ═══════════════════════════════════════ */}
       <section className="pb-28 md:pb-36 px-4">
         <Reveal>
@@ -403,13 +427,12 @@ export default function HomePage() {
 
             <div className="relative z-10">
               <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight leading-[0.95]">
-                Ready to feel
+                Your body deserves
                 <br />
-                the difference?
+                <span className="text-slate-500">what the pros use.</span>
               </h2>
               <p className="text-slate-400 text-lg mb-10 max-w-lg mx-auto">
-                Join physiotherapists and wellness professionals across Lebanon
-                who trust our formulations every day.
+                Trusted across clinics and homes in Lebanon. Try it once — you'll feel why.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
