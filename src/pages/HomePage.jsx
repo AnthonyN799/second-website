@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShoppingBag, Building2, ArrowRight, Leaf, ShieldCheck,
-  Wind, Heart, Users, Zap, Star
+  Wind, Heart, Users, Zap, Star, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { shopItems, heroSlides } from '../data/products';
 import ProductIcon from '../components/ProductIcon';
@@ -80,6 +80,13 @@ export default function HomePage() {
     if (!el) return;
     const progress = el.scrollLeft / (el.scrollWidth - el.clientWidth);
     setScrollProgress(progress);
+  };
+
+  const scrollCarousel = (direction) => {
+    const el = carouselRef.current;
+    if (!el) return;
+    const cardWidth = window.innerWidth >= 768 ? 340 : 300; // card + gap
+    el.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
   };
 
   return (
@@ -185,9 +192,25 @@ export default function HomePage() {
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 block mb-3">The Collection</span>
                 <h2 className="text-4xl md:text-6xl font-black tracking-tight">Made to perform.</h2>
               </div>
-              <Link to="/shop" className="hidden md:flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-900 transition-colors pb-2">
-                View all <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex items-center gap-3 pb-2">
+                <button
+                  onClick={() => scrollCarousel(-1)}
+                  className="w-11 h-11 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-100 hover:border-slate-300 transition-all active:scale-95"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="w-5 h-5 text-slate-600" />
+                </button>
+                <button
+                  onClick={() => scrollCarousel(1)}
+                  className="w-11 h-11 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-100 hover:border-slate-300 transition-all active:scale-95"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="w-5 h-5 text-slate-600" />
+                </button>
+                <Link to="/shop" className="hidden md:flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-slate-900 transition-colors ml-3">
+                  View all <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
           </Reveal>
         </div>
