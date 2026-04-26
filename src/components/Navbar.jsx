@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Leaf, ShoppingBag, Building2 } from 'lucide-react';
+import { Leaf, ShoppingBag, Building2, Info } from 'lucide-react';
 import { useCart } from '../context/CartContext.jsx';
 
 export default function Navbar() {
@@ -10,6 +10,7 @@ export default function Navbar() {
   const isHome = location.pathname === '/';
   const isB2B = location.pathname === '/b2b';
   const isShop = location.pathname === '/shop' || location.pathname.startsWith('/product/');
+  const isAbout = location.pathname === '/about';
   const hasHero = isHome || isB2B; // transparent header on hero pages
 
   useEffect(() => {
@@ -43,6 +44,10 @@ export default function Navbar() {
             <ShoppingBag className="w-4 h-4 mr-1" /> SHOP
           </Link>
 
+          <Link to="/about" className={`transition-colors flex items-center ${isAbout ? 'text-slate-900 font-black' : 'text-slate-400 hover:text-slate-900 font-bold'}`}>
+            <Info className="w-4 h-4 mr-1" /> ABOUT
+          </Link>
+
           <Link to="/b2b" className={`transition-colors flex items-center ${isB2B ? 'text-slate-900 font-black' : 'text-slate-400 hover:text-slate-900 font-bold'}`}>
             <Building2 className="w-4 h-4 mr-1" /> B2B PORTAL
           </Link>
@@ -62,6 +67,7 @@ export default function Navbar() {
         {/* Mobile nav */}
         <div className="flex md:hidden items-center space-x-3">
           <Link to="/shop" className={`font-bold text-xs uppercase tracking-wider ${isShop ? 'text-slate-900' : 'text-slate-400'}`}>Shop</Link>
+          <Link to="/about" className={`font-bold text-xs uppercase tracking-wider ${isAbout ? 'text-slate-900' : 'text-slate-400'}`}>About</Link>
           <Link to="/b2b" className={`font-bold text-xs uppercase tracking-wider ${isB2B ? 'text-slate-900' : 'text-slate-400'}`}>B2B</Link>
           <Link to="/cart" className="relative p-2">
             <ShoppingBag className="w-5 h-5" />

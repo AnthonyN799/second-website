@@ -16,6 +16,7 @@ export default function Footer() {
             </Link>
             <div className="flex space-x-8 text-[11px] font-bold uppercase tracking-widest text-slate-400">
               <Link to="/shop" className="hover:text-slate-900 transition-colors">Shop</Link>
+              <Link to="/about" className="hover:text-slate-900 transition-colors">About</Link>
               <button onClick={() => setShowPrivacy(true)} className="hover:text-slate-900 transition-colors">Privacy Policy</button>
             </div>
           </div>
