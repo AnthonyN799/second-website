@@ -10,6 +10,7 @@ import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import OrderConfirmedPage from './pages/OrderConfirmedPage.jsx';
 import B2BPortalPage from './pages/B2BPortalPage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-confirmed" element={<OrderConfirmedPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="*" element={<HomePage />} />
       </Routes>
       <Footer />
