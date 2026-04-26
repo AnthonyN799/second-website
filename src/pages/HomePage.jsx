@@ -368,8 +368,8 @@ export default function HomePage() {
           </Reveal>
           <Reveal delay={0.1}>
             <blockquote className="text-2xl md:text-4xl font-bold leading-snug tracking-tight mb-8 text-slate-900">
-              "Most of my patients ask to take tubes home after their sessions.
-              <span className="text-slate-300"> That says everything.</span>"
+              "Most of my patients ask to take PURE ICE gel tubes home after their sessions.
+              <span className="text-slate-300"> </span>"
             </blockquote>
           </Reveal>
           <Reveal delay={0.2}>
